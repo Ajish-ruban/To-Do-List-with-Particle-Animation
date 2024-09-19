@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TO DO List</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="mx-auto container flex items-start justify-center">
+    <div
+      x-data="toDoList()"
+      class="max-w-2xl mx-auto px-8 py-8 rounded-lg shadow-2xl shadow-white/20 bg-gray-200 min-h-[30rem] flex flex-col w-[40rem] mt-24 bg-transparent"
+    >
+      <div class="flex flex-col items-center justify-center mb-8">
+        <h1 class="text-4xl font-bold mb-4 text-gray-900">To Do List</h1>
+        <h3 class="text-lg mb-3 text-gray-600">
+          (Press Enter Button On Your Keyboard To Add List)
+        </h3>
+        <!-- enter button -->
+        <input
+          type="text"
+          x-model="newTodo"
+          placeholder="I need to..."
+          class="mx-auto px-6 py-3 rounded shadow text-xl w-full"
+          @keydown.enter="addToDo"
+        />
+      </div>
+      <div
+        class="bg-gray-200 w-full rounded shadow mb-8 flex-1 overflow-y-auto"
+      >
+        <template x-for="(todo, index) in todos" :key="index">
+          <div
+            class="flex items-center py-5"
+            :class="{ 'border-b border-gray-400': !isLastToDo(index) }"
+          >
+            <!-- checkbox -->
+            <div class="w-1/12 text-center">
+              <input
+                type="checkbox"
+                @change="toggleToDoCompleted(index)"
+                :checked="todo.completed"
+                class="w-6 h-6"
+              />
+            </div>
+
+            <!-- complete task strikeout  -->
+            <div class="w-10/12">
+              <p
+                x-text="todo.todo"
+                :class="{ 'line-through': todo.completed }"
+                class="text-lg"
+              ></p>
+            </div>
+
+            <!-- cancel button -->
+            <div class="w-1/12 text-center">
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-xl"
+                @click="deleteToDo(index)"
+              >
+                &cross;
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+      <!-- count -->
+      <div class="text-center mt-4 text-lg">
+        <span x-text="numberOfToDosCompleted()"></span> /
+        <span x-text="toDoCount()"></span> to dos completed
+      </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
